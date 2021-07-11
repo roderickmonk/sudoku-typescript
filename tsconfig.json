@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "rootDirs": ["TypeScript"],
+        "outDir": "./app",
+        "declaration": false,
+        "module": "commonjs",
+        "target": "ESNEXT",
+        "moduleResolution": "node",
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "allowJs": true,
+        "alwaysStrict": true,
+        "allowUnusedLabels": false,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "pretty": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "esModuleInterop": true,
+        "lib": ["es2018", "dom"],
+        "types": ["node"],
+        "resolveJsonModule": true,
+    },
+    "include": ["TypeScript/**/*.ts"],
+    "exclude": [
+        "./node_modules/",
+        "**/*-spec.ts"
+    ]
+}
