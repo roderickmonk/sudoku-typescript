@@ -36,7 +36,7 @@ There is an underlying assumption that client software is managing a parallel ga
     4. The placement value does not already exist in the placement box.
 
 ### POST /game/set
-/game/set is strictly for testing purposes.  It allows tests to be composed using canned boards which /game/set then sends to the server.  The server overwrites any existing board that may already exist with the incoming board.  To use this endpoint, the user must be signed-in in the usual way.
+/game/set is strictly for testing purposes.  It allows tests to be composed using canned boards which /game/set then sends to the server.  The server overwrites any existing board that may already exist with the incoming board.  To use this endpoint, the user must be signed-in.
 
 ## Source Code: ./TypeScript
 
