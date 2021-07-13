@@ -200,7 +200,7 @@ class Sudoku {
                 } catch (err) {
                     // expecting 403s
                     if (err.response.status !== 403 ||
-                        ![PlaceResult.ColumnConflict, PlaceResult.BoxConflict].includes(err.response.data)) {
+                        ![PlaceResult.BoxConflict].includes(err.response.data)) {
                         console.log({ responseData: err.response.data });
                         throw err;
                     }

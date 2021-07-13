@@ -163,7 +163,7 @@ class Sudoku {
                 }
                 catch (err) {
                     if (err.response.status !== 403 ||
-                        !["ColumnConflict", "BoxConflict"].includes(err.response.data)) {
+                        !["BoxConflict"].includes(err.response.data)) {
                         console.log({ responseData: err.response.data });
                         throw err;
                     }
