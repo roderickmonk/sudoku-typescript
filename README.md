@@ -7,6 +7,10 @@ The purpose of this repo is to demonstrate tyoical NodeJS / TypeScript usage.  T
 ## Theory of Operation
 The signing in process assigns a token to the session and this token is constant throughout the session and is returned to client software as a cookie.  Thereafter all subsequent API calls require the use of this token.  Also, at the point of the sign-in, a new game board is created and also returned to the user. This board is  recorded to a Redis database using the assigned token as key.
 
+## Software Versions
+    TypeScript: 4.3.5
+    NodeJS:     14.17.3
+
 ## Running the test software
 After cloning this repo, the test software can be run as follows:
 
