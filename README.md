@@ -12,7 +12,7 @@ The signing in process assigns a token to the session and this token is constant
     NodeJS:     14.17.3
 
 ## Running the test software
-After cloning this repo, the test software can be run as follows:
+After cloning, the test software can be run as follows:
 
     $ cd rod-sudoku
     $ source project    
