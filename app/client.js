@@ -96,7 +96,7 @@ class Sudoku {
                 }
             }
         }
-        console.log("Legal Cell Placement Tests Successful");
+        console.log("Legal Cell Placement Testing Successful");
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 9; ++j) {
                 const board = Array(81).fill(null);
@@ -107,7 +107,7 @@ class Sudoku {
                     throw new Error(`Illegal placement into (${i},${j}`);
                 }
                 catch (err) {
-                    if (err.response.status !== 403) {
+                    if (err.response.status !== 403 && err.response.data === "CellConflict") {
                         throw err;
                     }
                 }
