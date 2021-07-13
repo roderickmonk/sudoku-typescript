@@ -8,5 +8,6 @@
     "prettier.arrowParens": "avoid",
     "editor.wordWrapColumn": 110,
     "typescript.format.semicolons": "insert",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.insertFinalNewline": true
 }

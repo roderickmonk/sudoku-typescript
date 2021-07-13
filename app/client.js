@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const util_1 = require("./util");
-const endPoint = "http://localhost:8000";
+const endPoint = "http://34.218.191.230:8000";
 (async () => {
     try {
         let token;

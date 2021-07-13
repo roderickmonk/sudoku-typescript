@@ -2,10 +2,10 @@
 
 import axios from "axios";
 import setCookie from "set-cookie-parser";
-import { PlaceNumber, Puzzle, SignIn } from "./interfaces";
+import { Placement, Puzzle, SignIn } from "./interfaces";
 import { getToken, displayPuzzle, placeNumber } from "./util";
 
-const endPoint = "http://localhost:8000";
+const endPoint = "http://34.218.191.230:8000";
 
 (async () => {
     try {
@@ -48,7 +48,7 @@ const endPoint = "http://localhost:8000";
 
         // Place a number
         {
-            const placeData: PlaceNumber = {
+            const placeData: Placement = {
                 i: 0,
                 j: 0,
                 value: 4,

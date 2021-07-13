@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import Redis from "ioredis";
 import { makepuzzle } from "sudoku";
-import { PlaceNumber } from "./interfaces";
+import { Placement } from "./interfaces";
 import { PlaceResult } from "./enums";
 import { displayPuzzle } from "./util";
 import _ from "lodash";
@@ -62,58 +62,34 @@ export const signIn = async (req: any, res: any) => {
 };
 
 export const place = async (req: any, res: any) => {
-    // We can obtain the session token from the requests cookies, which come with every request
-
+    //
     const token = req.cookies.token;
 
-    // if the cookie is not set, return an unauthorized error
-    if (!token) {
-        return res.status(401).end();
+    // if token missing or unknown or corrupt, return unauthorized
+    if (!token || (await redis.get(token)) === null) {
+        return res.status(401).send("Unauthorized");
     }
 
-    if ((await redis.get(token)) === null) {
-        return res.status(400).end();
-    }
-
-    if (environment === "development") {
-        console.log("place token:", token);
-
-        const json = await redis.get(token);
-
-        if (json) {
-            const puzzle = JSON.parse(json);
-            displayPuzzle(puzzle);
-        }
-    }
-    let payload;
     try {
-        // Parse the JWT string and store the result in `payload`.
-        // Note that we are passing the key in this method as well. This method will throw an error
-        // if the token is invalid (if it has expired according to the expiry time we set on sign in),
-        // or if the signature does not match
-        payload = jwt.verify(token, jwtKey) as { username: string };
+        jwt.verify(token, jwtKey);
     } catch (e) {
         if (e instanceof jwt.JsonWebTokenError) {
-            // if the error thrown is because the JWT is unauthorized, return a 401 error
-            return res.status(401).end();
+            // Not a proper token, return a 401
+            return res.status(401).send("Unauthorized");
         }
         // otherwise, return a bad request error
         return res.status(400).end();
     }
 
-    const { i, j, value } = req.body as PlaceNumber;
-    console.log({ i, j, value });
+    const puzzle = JSON.parse((await redis.get(token)) as string);
 
-    let json = await redis.get(token);
+    const { i, j, value } = req.body as Placement;
 
-    if (json === null) {
-        return res.status(400).send("Token Not Recognized");
+    if (environment === "development") {
+        console.log("/place token:", token);
+        displayPuzzle(puzzle);
+        console.log({ i, j, value });
     }
-
-    const puzzle = JSON.parse(json);
-
-    console.log("place puzzle");
-    displayPuzzle(puzzle);
 
     // Already occupied?
     if (puzzle[9 * i + j]) {

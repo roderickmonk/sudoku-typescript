@@ -1,4 +1,4 @@
-export interface PlaceNumber {
+export interface Placement {
     i: number;
     j: number;
     value: number;
