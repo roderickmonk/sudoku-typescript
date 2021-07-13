@@ -118,7 +118,7 @@ class Sudoku {
         }
         console.log("Legal Cell Placement Testing Successful");
 
-        // Illegal Placement Testing
+        // Cell Conflict Testing
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 9; ++j) {
 
@@ -137,9 +137,9 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Cell Placement Testing Successful");
+        console.log("Cell Conflict Testing Successful");
 
-        // Illegal Row Placement Testing
+        // Row Conflict Testing
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 8; ++j) {
 
@@ -161,9 +161,9 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Row Placement Testing Successful");
+        console.log("Row Conflict Testing Successful");
 
-        // Illegal Column Placement Testing
+        // Column Conflict Testing
         for (let i = 0; i < 8; ++i) {
             for (let j = 0; j < 9; ++j) {
 
@@ -184,7 +184,7 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Column Placement Testing Successful");
+        console.log("Column Conflict Testing Successful");
 
     } catch (err) {
         throw err;
