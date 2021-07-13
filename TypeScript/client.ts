@@ -131,7 +131,7 @@ class Sudoku {
                     throw new Error(`Illegal placement into (${i},${j}`);
                 } catch (err) {
                     // expecting 403s
-                    if (err.response.status !== 403) {
+                    if (err.response.status !== 403 && err.response.data === PlaceResult.CellConflict) {
                         throw err;
                     }
                 }
