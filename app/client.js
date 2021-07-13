@@ -113,7 +113,7 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Cell Placement Testing Successful");
+        console.log("Cell Conflict Testing Successful");
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 8; ++j) {
                 const board = Array(81).fill(null);
@@ -132,7 +132,7 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Row Placement Testing Successful");
+        console.log("Row Conflict Testing Successful");
         for (let i = 0; i < 8; ++i) {
             for (let j = 0; j < 9; ++j) {
                 const board = Array(81).fill(null);
@@ -151,7 +151,26 @@ class Sudoku {
                 }
             }
         }
-        console.log("Illegal Column Placement Testing Successful");
+        console.log("Column Conflict Testing Successful");
+        for (let i = 0; i < 3; ++i) {
+            for (let j = 0; j < 2; ++j) {
+                const board = Array(81).fill(null);
+                board[9 * i + j] = 4;
+                await sudoku.setBoard(board);
+                try {
+                    await sudoku.place({ i, j: 2, value: 4 });
+                    throw new Error(`Illegal placement (${i},${j}`);
+                }
+                catch (err) {
+                    if (err.response.status !== 403 ||
+                        !["ColumnConflict", "BoxConflict"].includes(err.response.data)) {
+                        console.log({ responseData: err.response.data });
+                        throw err;
+                    }
+                }
+            }
+        }
+        console.log("Box Conflict Testing Successful");
     }
     catch (err) {
         throw err;

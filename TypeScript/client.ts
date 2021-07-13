@@ -186,6 +186,29 @@ class Sudoku {
         }
         console.log("Column Conflict Testing Successful");
 
+        // Box Conflict Testing
+        for (let i = 0; i < 3; ++i) {
+            for (let j = 0; j < 2; ++j) {
+
+                const board: Board = Array(81).fill(null);
+                board[9 * i + j] = 4;
+                await sudoku.setBoard(board);
+
+                try {
+                    await sudoku.place({ i, j: 2, value: 4 });
+                    throw new Error(`Illegal placement (${i},${j}`);
+                } catch (err) {
+                    // expecting 403s
+                    if (err.response.status !== 403 ||
+                        ![PlaceResult.ColumnConflict, PlaceResult.BoxConflict].includes(err.response.data)) {
+                        console.log({ responseData: err.response.data });
+                        throw err;
+                    }
+                }
+            }
+        }
+        console.log("Box Conflict Testing Successful");
+
     } catch (err) {
         throw err;
     }
