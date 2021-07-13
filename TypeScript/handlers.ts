@@ -1,5 +1,3 @@
-import assert from "assert";
-import chalk from "chalk";
 import jwt from "jsonwebtoken";
 import Redis from "ioredis";
 import { makepuzzle } from "sudoku";
@@ -10,7 +8,7 @@ import _ from "lodash";
 
 const environment = process.env.NODE_ENV;
 
-const redis = new Redis();
+const redis = new Redis(process.env.REDIS_STORAGE);
 
 const jwtKey = process.env.JWT_KEY!;
 

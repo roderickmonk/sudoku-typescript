@@ -10,7 +10,7 @@ const sudoku_1 = require("sudoku");
 const util_1 = require("./util");
 const lodash_1 = __importDefault(require("lodash"));
 const environment = process.env.NODE_ENV;
-const redis = new ioredis_1.default();
+const redis = new ioredis_1.default(process.env.REDIS_STORAGE);
 const jwtKey = process.env.JWT_KEY;
 const users = {
     user1: "password1",

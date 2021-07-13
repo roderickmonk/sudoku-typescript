@@ -1,3 +1,4 @@
 #!/bin/bash
 
 export JWT_KEY="a_very_secret_key"
+export PATH=$PATH:app
