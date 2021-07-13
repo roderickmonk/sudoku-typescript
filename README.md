@@ -5,7 +5,7 @@
 The purpose of this repo is to demonstrate tyoical NodeJS / TypeScript usage.  The motivator is the game of Sudoku.  A Sudoku server runs in an AWS ec2 and is managed by pm2 (https://pm2.keymetrics.io/).  A test client is also available that puts the server through its paces via various tests.
 
 ## Theory of Operation
-The signing in process assigns a token to the session and this session is constant throughout the session and is returned to client software as a cookie.  Thereafter all subsequent API calls require the use of this token.  Also, at the point of the sign-in, a new game board is created and also returned to the user. This board is  recorded to a Redis database using the assinged token as key.
+The signing in process assigns a token to the session and this token is constant throughout the session and is returned to client software as a cookie.  Thereafter all subsequent API calls require the use of this token.  Also, at the point of the sign-in, a new game board is created and also returned to the user. This board is  recorded to a Redis database using the assinged token as key.
 
 ## Running the test software
 After cloning this repo, the test software can be run as follows:
