@@ -14,7 +14,7 @@ const redis = new Redis(process.env.REDIS_STORAGE);
 const jwtKey = process.env.JWT_KEY!;
 
 const users = {
-    user1: "password1",
+    user1: "orderful",
     user2: "password2",
 };
 

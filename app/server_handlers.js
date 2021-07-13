@@ -13,7 +13,7 @@ const environment = process.env.NODE_ENV;
 const redis = new ioredis_1.default(process.env.REDIS_STORAGE);
 const jwtKey = process.env.JWT_KEY;
 const users = {
-    user1: "password1",
+    user1: "orderful",
     user2: "password2",
 };
 const getBoard = async (req, res) => {

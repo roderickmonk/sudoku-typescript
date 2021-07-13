@@ -26,7 +26,7 @@ class Sudoku {
                 url: `${endPoint}/signin`,
                 data: {
                     username: "user1",
-                    password: "password1",
+                    password: "orderful",
                 } as SignIn,
             });
 
@@ -217,7 +217,6 @@ class Sudoku {
                     const jj = j === cols[0] ? cols[1] : j === cols[1] ? cols[2] : cols[0];
 
                     try {
-                        // Place the same value in some other cell other than the one selected
                         await sudoku.place({ i: ii, j: jj, value });
                         throw new Error(`Illegal placement (${ii},${jj})`);
                     } catch (err) {

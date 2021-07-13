@@ -19,7 +19,7 @@ class Sudoku {
                 url: `${endPoint}/signin`,
                 data: {
                     username: "user1",
-                    password: "password1",
+                    password: "orderful",
                 },
             });
             this.token = util_1.getToken(resp);
