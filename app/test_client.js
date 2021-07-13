@@ -8,7 +8,7 @@ const axios_1 = __importDefault(require("axios"));
 const util_1 = require("./util");
 const endPoint = "http://34.218.191.230:8000";
 const environment = process.env.NODE_ENV;
-class Sudoku {
+class SudokuClient {
     token;
     board;
     constructor() { }
@@ -81,7 +81,7 @@ class Sudoku {
 }
 (async () => {
     try {
-        const sudoku = new Sudoku();
+        const sudoku = new SudokuClient();
         await sudoku.signIn();
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 9; ++j) {

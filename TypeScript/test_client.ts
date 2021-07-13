@@ -10,7 +10,7 @@ const endPoint = "http://34.218.191.230:8000";
 const environment = process.env.NODE_ENV;
 
 
-class Sudoku {
+class SudokuClient {
 
     public token!: Token;
     private board!: Board;
@@ -97,7 +97,7 @@ class Sudoku {
 (async () => {
     try {
 
-        const sudoku = new Sudoku();
+        const sudoku = new SudokuClient();
 
         await sudoku.signIn();
 
