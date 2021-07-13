@@ -128,7 +128,7 @@ class Sudoku {
 
                 try {
                     await sudoku.place({ i, j, value: 3 });
-                    throw new Error(`Illegal placement into (${i},${j}`);
+                    throw new Error(`Illegal placement into (${i},${j})`);
                 } catch (err) {
                     // expecting 403s
                     if (err.response.status !== 403 && err.response.data === PlaceResult.CellConflict) {
@@ -149,7 +149,7 @@ class Sudoku {
 
                 try {
                     await sudoku.place({ i, j: 8, value: 4 });
-                    throw new Error(`Illegal placement (${i},${j}`);
+                    throw new Error(`Illegal placement (${i},${j})`);
                 } catch (err) {
                     // expecting 403s
                     if (err.response.status !== 403 ||
@@ -173,7 +173,7 @@ class Sudoku {
 
                 try {
                     await sudoku.place({ i: 8, j, value: 4 });
-                    throw new Error(`Illegal placement (${i},${j}`);
+                    throw new Error(`Illegal placement (${i},${j})`);
                 } catch (err) {
                     // expecting 403s
                     if (err.response.status !== 403 ||
@@ -186,28 +186,53 @@ class Sudoku {
         }
         console.log("Column Conflict Testing Successful");
 
-        // Box Conflict Testing
-        for (let i = 0; i < 3; ++i) {
-            for (let j = 0; j < 2; ++j) {
+        const boxes = [
+            // top squares
+            [[0, 1, 2], [0, 1, 2]],
+            [[0, 1, 2], [3, 4, 5]],
+            [[0, 1, 2], [6, 7, 8]],
+            // middle squares
+            [[3, 4, 5], [0, 1, 2]],
+            [[3, 4, 5], [3, 4, 5]],
+            [[3, 4, 5], [6, 7, 8]],
+            // bottom squares
+            [[6, 7, 8], [0, 1, 2]],
+            [[6, 7, 8], [3, 4, 5]],
+            [[6, 7, 8], [6, 7, 8]],
+        ];
 
-                const board: Board = Array(81).fill(null);
-                board[9 * i + j] = 4;
-                await sudoku.setBoard(board);
+        const value = 4; // use the same value throughout
 
-                try {
-                    await sudoku.place({ i, j: 2, value: 4 });
-                    throw new Error(`Illegal placement (${i},${j}`);
-                } catch (err) {
-                    // expecting 403s
-                    if (err.response.status !== 403 ||
-                        ![PlaceResult.BoxConflict].includes(err.response.data)) {
-                        console.log({ responseData: err.response.data });
-                        throw err;
+        for (const [rows, cols] of boxes) {
+
+            for (let i of rows) {
+                for (let j of cols) {
+
+                    const board: Board = Array(81).fill(null);
+                    board[9 * i + j] = value;
+                    await sudoku.setBoard(board);
+
+                    // Find some other cell
+                    const ii = i === rows[0] ? rows[1] : i === rows[1] ? rows[2] : rows[0];
+                    const jj = j === cols[0] ? cols[1] : j === cols[1] ? cols[2] : cols[0];
+
+                    try {
+                        // Place the same value in some other cell other than the one selected
+                        await sudoku.place({ i: ii, j: jj, value });
+                        throw new Error(`Illegal placement (${ii},${jj})`);
+                    } catch (err) {
+                        // expecting 403s
+                        if (err.response.status !== 403 ||
+                            ![PlaceResult.BoxConflict].includes(err.response.data)) {
+                            console.log({ responseData: err.response.data });
+                            throw err;
+                        }
                     }
                 }
             }
         }
         console.log("Box Conflict Testing Successful");
+
 
     } catch (err) {
         throw err;
