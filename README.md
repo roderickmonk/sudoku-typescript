@@ -30,7 +30,7 @@ There is an underlying assumption that client software is managing a parallel ga
 ### POST /game/place
 /game/place allows client software to place a number on the board.  However, illegal placements are not permitted and will be rejected as a bad request.  Checks that are applied are the following:
 
-    1. The placement cell is not already occupied.
+    1. The placement cell is available.
     2. The placement value does not already exist in the placement row.
     3. The placement value does not already exist in the placement column.
     4. The placement value does not already exist in the placement box.
