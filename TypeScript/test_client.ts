@@ -186,6 +186,8 @@ class SudokuClient {
         }
         console.log("Column Conflict Testing Successful");
 
+
+        // Box Conflict Testing
         const boxes = [
             // top squares
             [[0, 1, 2], [0, 1, 2]],
