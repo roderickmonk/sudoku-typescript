@@ -1,19 +1,26 @@
 #!/usr/bin/env node
 
 import axios from "axios";
-import setCookie from "set-cookie-parser";
-import { Placement, Puzzle, SignIn } from "./interfaces";
-import { getToken, displayPuzzle, placeNumber } from "./util";
+import _ from "lodash";
+import { PlaceResult } from "./enums";
+import { Placement, Board, SignIn, Token } from "./interfaces";
+import { getToken, displayBoard, placeNumber } from "./util";
 
 const endPoint = "http://34.218.191.230:8000";
+const environment = process.env.NODE_ENV;
 
-(async () => {
-    try {
-        let token: string;
-        let puzzle: Puzzle;
 
-        // Signin
-        {
+class Sudoku {
+
+    public token!: Token;
+    private board!: Board;
+
+    constructor() { }
+
+    // Signin
+    public signIn = async (): Promise<void> => {
+
+        try {
             const resp = await axios({
                 method: "post",
                 url: `${endPoint}/signin`,
@@ -22,56 +29,163 @@ const endPoint = "http://34.218.191.230:8000";
                     password: "password1",
                 } as SignIn,
             });
-            console.log(resp);
 
-            token = getToken(resp);
+            this.token = getToken(resp);
 
-            puzzle = resp.data;
-            displayPuzzle(puzzle);
+            this.board = resp.data;
 
-            console.log({ token });
+            if (environment === 'development') {
+                displayBoard(this.board);
+            }
+
+        } catch (err) {
+            throw err;
         }
+    };
 
+    public place = async (placement: Placement): Promise<void> => {
+
+        try {
+            await axios({
+                method: "post",
+                url: `${endPoint}/game/place`,
+                data: placement,
+                headers: {
+                    Cookie: `token=${this.token}`,
+                },
+            });
+
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    public setBoard = async (board: Board): Promise<void> => {
+        try {
+            await axios({
+                method: "post",
+                url: `${endPoint}/game/set`,
+                data: board,
+                headers: {
+                    Cookie: `token=${this.token}`,
+                },
+            });
+        } catch (err) {
+            throw new Error(`${err.message} (${err.response.data})`);
+        }
+    };
+
+    public refresh = async (): Promise<void> => {
         // Refresh the onboard game
-        {
+        try {
             const resp = await axios({
                 method: "get",
                 url: `${endPoint}/game/refresh`,
                 headers: {
-                    Cookie: `token=${token}`,
+                    Cookie: `token=${this.token}`,
                 },
             });
 
-            const puzzle = resp.data as Puzzle;
-            displayPuzzle(puzzle);
+            const board = resp.data as Board;
+            displayBoard(board);
+        } catch (err) {
+            throw err;
         }
+    };
+}
 
-        // Place a number
-        {
-            const placeData: Placement = {
-                i: 0,
-                j: 0,
-                value: 4,
-            };
+(async () => {
+    try {
 
-            let resp: any;
-            try {
-                resp = await axios({
-                    method: "post",
-                    url: `${endPoint}/game/place`,
-                    data: placeData,
-                    headers: {
-                        Cookie: `token=${token}`,
-                    },
-                });
-            } catch (err) {
-                throw new Error(`${err.message} (${err.response.data})`);
+        const sudoku = new Sudoku();
+
+        await sudoku.signIn();
+
+        // Ensure all board positions are available on an empty board
+        for (let i = 0; i < 9; ++i) {
+            for (let j = 0; j < 9; ++j) {
+
+                const board: Board = Array(81).fill(null);
+                await sudoku.setBoard(board);
+
+                try {
+                    await sudoku.place({ i, j, value: 3 });
+                } catch (err) {
+                    console.log({ responseData: err.response.data });
+                    throw err;
+                }
             }
-
-            placeNumber(placeData, puzzle);
-
-            console.log({ respData: resp.data });
         }
+        console.log("Legal Cell Placement Testing Successful");
+
+        // Illegal Placement Testing
+        for (let i = 0; i < 9; ++i) {
+            for (let j = 0; j < 9; ++j) {
+
+                const board: Board = Array(81).fill(null);
+                board[9 * i + j] = 9;
+                await sudoku.setBoard(board);
+
+                try {
+                    await sudoku.place({ i, j, value: 3 });
+                    throw new Error(`Illegal placement into (${i},${j}`);
+                } catch (err) {
+                    // expecting 403s
+                    if (err.response.status !== 403) {
+                        throw err;
+                    }
+                }
+            }
+        }
+        console.log("Illegal Cell Placement Testing Successful");
+
+        // Illegal Row Placement Testing
+        for (let i = 0; i < 9; ++i) {
+            for (let j = 0; j < 8; ++j) {
+
+                const board: Board = Array(81).fill(null);
+                board[9 * i + j] = 4;
+                await sudoku.setBoard(board);
+
+                try {
+                    await sudoku.place({ i, j: 8, value: 4 });
+                    throw new Error(`Illegal placement (${i},${j}`);
+                } catch (err) {
+                    // expecting 403s
+                    if (err.response.status !== 403 ||
+                        ![PlaceResult.RowConflict, PlaceResult.BoxConflict].includes(err.response.data)) {
+
+                        console.log({ responseData: err.response.data });
+                        throw err;
+                    }
+                }
+            }
+        }
+        console.log("Illegal Row Placement Testing Successful");
+
+        // Illegal Column Placement Testing
+        for (let i = 0; i < 8; ++i) {
+            for (let j = 0; j < 9; ++j) {
+
+                const board: Board = Array(81).fill(null);
+                board[9 * i + j] = 4;
+                await sudoku.setBoard(board);
+
+                try {
+                    await sudoku.place({ i: 8, j, value: 4 });
+                    throw new Error(`Illegal placement (${i},${j}`);
+                } catch (err) {
+                    // expecting 403s
+                    if (err.response.status !== 403 ||
+                        ![PlaceResult.ColumnConflict, PlaceResult.BoxConflict].includes(err.response.data)) {
+                        console.log({ responseData: err.response.data });
+                        throw err;
+                    }
+                }
+            }
+        }
+        console.log("Illegal Column Placement Testing Successful");
+
     } catch (err) {
         throw err;
     }

@@ -3,14 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.placeNumber = exports.getToken = exports.displayPuzzle = void 0;
+exports.placeNumber = exports.getToken = exports.displayBoard = void 0;
 const assert_1 = __importDefault(require("assert"));
 const chalk_1 = __importDefault(require("chalk"));
-const displayPuzzle = (puzzle) => {
-    assert_1.default(puzzle.length == 81);
+const displayBoard = (board) => {
+    assert_1.default(board.length == 81);
     for (let i = 0; i < 9; ++i) {
         for (let j = 0; j < 9; ++j) {
-            const cell = puzzle[9 * i + j];
+            const cell = board[9 * i + j];
             if (cell === null) {
                 process.stdout.write(chalk_1.default.white("   -  "));
             }
@@ -21,14 +21,14 @@ const displayPuzzle = (puzzle) => {
         process.stdout.write("\n");
     }
 };
-exports.displayPuzzle = displayPuzzle;
+exports.displayBoard = displayBoard;
 const getToken = (resp) => {
     const cookies = resp.headers["set-cookie"][0].split(";");
     return cookies[0].split("=")[1];
 };
 exports.getToken = getToken;
-const placeNumber = (placeData, puzzle) => {
+const placeNumber = (placeData, board) => {
     const { i, j, value } = placeData;
-    puzzle[9 * i + j] = value;
+    board[9 * i + j] = value;
 };
 exports.placeNumber = placeNumber;

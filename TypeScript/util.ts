@@ -1,14 +1,14 @@
 import assert from "assert";
 import chalk from "chalk";
-import { Placement, Puzzle } from "./interfaces";
+import { Placement, Board } from "./interfaces";
 
-export const displayPuzzle = (puzzle: Puzzle) => {
+export const displayBoard = (board: Board) => {
     //
-    assert(puzzle.length == 81);
+    assert(board.length == 81);
 
     for (let i = 0; i < 9; ++i) {
         for (let j = 0; j < 9; ++j) {
-            const cell = puzzle[9 * i + j];
+            const cell = board[9 * i + j];
             if (cell === null) {
                 process.stdout.write(chalk.white("   -  "));
             } else {
@@ -24,7 +24,8 @@ export const getToken = (resp: any): string => {
     return cookies[0].split("=")[1];
 };
 
-export const placeNumber = (placeData: Placement, puzzle: Puzzle): void => {
+export const placeNumber = (placeData: Placement, board: Board): void => {
     const { i, j, value } = placeData;
-    puzzle[9 * i + j] = value;
+    board[9 * i + j] = value;
 };
+

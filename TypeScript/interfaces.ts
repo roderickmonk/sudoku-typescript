@@ -9,4 +9,5 @@ export interface SignIn {
     password: string;
 }
 
-export type Puzzle = Array<number | null>;
+export type Board = Array<number | null>;
+export type Token = string;

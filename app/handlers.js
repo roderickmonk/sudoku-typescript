@@ -32,15 +32,11 @@ const signIn = async (req, res) => {
             const json = await redis.get(token);
             if (json) {
                 const puzzle = JSON.parse(json);
-                util_1.displayPuzzle(puzzle);
+                util_1.displayBoard(puzzle);
             }
         }
         res.cookie("token", token);
         res.send(puzzle);
-        const junk = lodash_1.default.chunk(puzzle, 9);
-        const junk2 = lodash_1.default.zip(...junk);
-        console.log({ junk });
-        console.log({ junk2 });
     }
     catch (err) {
         throw err;
@@ -49,39 +45,25 @@ const signIn = async (req, res) => {
 exports.signIn = signIn;
 const place = async (req, res) => {
     const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).end();
+    if (!token || (await redis.get(token)) === null) {
+        return res.status(401).send("Unauthorized");
     }
-    if ((await redis.get(token)) === null) {
-        return res.status(400).end();
-    }
-    if (environment === "development") {
-        console.log("place token:", token);
-        const json = await redis.get(token);
-        if (json) {
-            const puzzle = JSON.parse(json);
-            util_1.displayPuzzle(puzzle);
-        }
-    }
-    let payload;
     try {
-        payload = jsonwebtoken_1.default.verify(token, jwtKey);
+        jsonwebtoken_1.default.verify(token, jwtKey);
     }
     catch (e) {
         if (e instanceof jsonwebtoken_1.default.JsonWebTokenError) {
-            return res.status(401).end();
+            return res.status(401).send("Unauthorized");
         }
         return res.status(400).end();
     }
+    const puzzle = JSON.parse((await redis.get(token)));
     const { i, j, value } = req.body;
-    console.log({ i, j, value });
-    let json = await redis.get(token);
-    if (json === null) {
-        return res.status(400).send("Token Not Recognized");
+    if (environment === "development") {
+        console.log("/place token:", token);
+        util_1.displayBoard(puzzle);
+        console.log({ i, j, value });
     }
-    const puzzle = JSON.parse(json);
-    console.log("place puzzle");
-    util_1.displayPuzzle(puzzle);
     if (puzzle[9 * i + j]) {
         return res.status(400).send("CellConflict");
     }
@@ -235,7 +217,7 @@ const place = async (req, res) => {
     console.log({ byColumn: byColumn[j] });
     puzzle[9 * i + j] = value;
     await redis.set(token, JSON.stringify(puzzle));
-    util_1.displayPuzzle(puzzle);
+    util_1.displayBoard(puzzle);
     res.send("Placed");
 };
 exports.place = place;
@@ -261,7 +243,7 @@ const refresh = async (req, res) => {
         const json = await redis.get(token);
         if (json) {
             const puzzle = JSON.parse(json);
-            util_1.displayPuzzle(puzzle);
+            util_1.displayBoard(puzzle);
             res.cookie("token", token);
             res.send(puzzle);
         }
