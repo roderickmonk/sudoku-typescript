@@ -113,8 +113,22 @@ export const place = async (req: any, res: any) => {
         const byRow = _.chunk(board, 9);
         const byColumn = _.zip(...byRow);
 
-        const squares = [
-            // Middle 3 squares
+        const boxes2 = [];
+
+        for (let box = 0; box < 9; ++box) {
+            const box_row = [];
+            for (let row = 0; row < 3; ++row) {
+                for (let col = 0; col < 3; ++col) {
+                    box_row.push(byRow[3 * (box % 3) + row][3 * (box % 3) + col]);
+                }
+            }
+            boxes2.push(box_row);
+        }
+
+        console.log({ boxes2 });
+
+        const boxes = [
+            // Top 3 boxes
             [
                 byRow[0][0],
                 byRow[0][1],
@@ -148,7 +162,7 @@ export const place = async (req: any, res: any) => {
                 byRow[2][7],
                 byRow[2][8],
             ],
-            // Middle 3 squares
+            // Middle 3 boxes
             [
                 byRow[3][0],
                 byRow[3][1],
@@ -182,7 +196,7 @@ export const place = async (req: any, res: any) => {
                 byRow[5][7],
                 byRow[5][8],
             ],
-            // Bottom 3 squares
+            // Bottom 3 boxes
             [
                 byRow[6][0],
                 byRow[6][1],
@@ -218,6 +232,12 @@ export const place = async (req: any, res: any) => {
             ],
         ];
 
+        console.log({ boxes });
+        console.log({ boxes2 });
+
+        process.exit(0);
+
+
         let box: number;
         if (i < 3) {
             if (j < 3) {
@@ -245,7 +265,7 @@ export const place = async (req: any, res: any) => {
             }
         }
 
-        if (squares[box].includes(value)) {
+        if (boxes[box].includes(value)) {
             return res.status(403).send(PlaceResult.BoxConflict);
         }
 
@@ -257,8 +277,10 @@ export const place = async (req: any, res: any) => {
             return res.status(403).send(PlaceResult.ColumnConflict);
         }
 
+        // Place the number
         board[9 * i + j] = value;
 
+        // Record the now modified now
         await redis.set(token, JSON.stringify(board));
 
         if (environment === 'development') {

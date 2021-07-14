@@ -189,15 +189,15 @@ class SudokuClient {
 
         // Box Conflict Testing
         const boxes = [
-            // top squares
+            // top boxes
             [[0, 1, 2], [0, 1, 2]],
             [[0, 1, 2], [3, 4, 5]],
             [[0, 1, 2], [6, 7, 8]],
-            // middle squares
+            // middle boxes
             [[3, 4, 5], [0, 1, 2]],
             [[3, 4, 5], [3, 4, 5]],
             [[3, 4, 5], [6, 7, 8]],
-            // bottom squares
+            // bottom boxes
             [[6, 7, 8], [0, 1, 2]],
             [[6, 7, 8], [3, 4, 5]],
             [[6, 7, 8], [6, 7, 8]],
