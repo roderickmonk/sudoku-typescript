@@ -58,3 +58,24 @@ Various utility functions.
 ### test_client.ts
 The test code.
 
+## Possible Security Improvements
+*   Use https
+*   User 2FA
+*   Timeout the tokens
+*   White list the AWS ec2's source IP addresses for port 8000
+    
+
+## Possible Performance Improvements (goal: 10m users)
+*   Assuming each board is 400 bytes (very crude approximation) would require 4Gb for 10m users, which is doable with a sufficiently large ec2.
+*   Manage the board as a typed array
+*   Use a Javascript Map() instead of Redis
+*   Box conflict testing improvements: memorize the boxes so that they do not need to be redetermined on each placement.  Possibly this could be done on an LRU basis, that is, retaining boxes in a Map() and only re-determing the boxes should the board need to be retrieved from Redis.
+*   Use a load balancer that would farm off connections to child NodeJS servers.
+*   Move all board level management off to a C++ or Rust add-on (albeit retaining NodeJS as the executive).
+*   Rewrite the entire server in C++ or Rust.
+
+
+
+
+
+
