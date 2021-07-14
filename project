@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export PATH=$PATH:app
+export PATH=$PATH:app:app/TypeScript
 export NODE_ENV=development

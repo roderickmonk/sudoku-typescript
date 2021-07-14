@@ -6,7 +6,8 @@ import { PlaceResult } from "./enums";
 import { Placement, Board, SignIn, Token } from "./interfaces";
 import { getToken, displayBoard, placeNumber } from "./util";
 
-const endPoint = "http://34.218.191.230:8000";
+// const endPoint = "http://34.218.191.230:8000";
+const endPoint = "http://127.0.0.1:8000";
 const environment = process.env.NODE_ENV;
 
 
@@ -100,6 +101,8 @@ class SudokuClient {
         const sudoku = new SudokuClient();
 
         await sudoku.signIn();
+
+        console.log("Signed in");
 
         // Ensure all board positions are available on an empty board
         for (let i = 0; i < 9; ++i) {
