@@ -142,7 +142,7 @@ export const place = async (req: any, res: any) => {
         // Place the number
         board[9 * i + j] = value;
 
-        // Record the now modified now
+        // Record the now modified row
         await redis.set(token, JSON.stringify(board));
 
         if (environment === 'development') {
