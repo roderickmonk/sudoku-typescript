@@ -66,7 +66,7 @@ The test code.
     
 
 ## Possible Performance Improvements (goal: 10m users)
-*   Assuming each board is 400 bytes (very crude approximation) would require 4Gb for 10m users, which is doable with a sufficiently large ec2.
+*   Assuming each board requires 400 bytes (pulled right out of the air), this would require 4Gb for 10m users, which is doable with a sufficiently large ec2.
 *   Manage the board as a typed array
 *   Use a Javascript Map() instead of Redis
 *   Box conflict testing improvements: memorize the boxes so that they do not need to be redetermined on each placement.  Possibly this could be done on an LRU basis, that is, retaining boxes in a Map() and only re-determing the boxes should the board need to be retrieved from Redis.
