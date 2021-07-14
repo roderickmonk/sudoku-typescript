@@ -58,7 +58,7 @@ Various utility functions.
 ### test_client.ts
 The test code.
 
-## Possible Security Improvements
+## Security Improvements
 *   Use https
 *   User 2FA
 *   Timeout the tokens
