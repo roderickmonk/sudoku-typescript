@@ -83,7 +83,6 @@ class SudokuClient {
     try {
         const sudoku = new SudokuClient();
         await sudoku.signIn();
-        console.log("Signed in");
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 9; ++j) {
                 const board = Array(81).fill(null);

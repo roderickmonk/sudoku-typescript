@@ -25,6 +25,7 @@
     "include": ["TypeScript/**/*.ts", "archive/server_handlers copy.ts"],
     "exclude": [
         "./node_modules/",
-        "**/*-spec.ts"
+        "**/*-spec.ts",
+        "archive"
     ]
 }

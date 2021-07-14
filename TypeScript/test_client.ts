@@ -102,8 +102,6 @@ class SudokuClient {
 
         await sudoku.signIn();
 
-        console.log("Signed in");
-
         // Ensure all board positions are available on an empty board
         for (let i = 0; i < 9; ++i) {
             for (let j = 0; j < 9; ++j) {
