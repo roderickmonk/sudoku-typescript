@@ -6,8 +6,8 @@ import { PlaceResult } from "./enums";
 import { Placement, Board, SignIn, Token } from "./interfaces";
 import { getToken, displayBoard, placeNumber } from "./util";
 
-// const endPoint = "http://34.218.191.230:8000";
-const endPoint = "http://127.0.0.1:8000";
+const endPoint = "http://34.218.191.230:8000";
+// const endPoint = "http://127.0.0.1:8000";
 const environment = process.env.NODE_ENV;
 
 
