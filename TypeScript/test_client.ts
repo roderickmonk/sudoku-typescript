@@ -215,7 +215,7 @@ class SudokuClient {
                     board[9 * i + j] = value;
                     await sudoku.setBoard(board);
 
-                    // Find some other cell
+                    // Find some other cell in the same box
                     const ii = i === rows[0] ? rows[1] : i === rows[1] ? rows[2] : rows[0];
                     const jj = j === cols[0] ? cols[1] : j === cols[1] ? cols[2] : cols[0];
 
