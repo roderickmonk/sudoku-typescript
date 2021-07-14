@@ -204,7 +204,7 @@ class SudokuClient {
             [[6, 7, 8], [6, 7, 8]],
         ];
 
-        const value = 4; 
+        const value = 4;
 
         for (const [rows, cols] of boxes) {
 
