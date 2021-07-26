@@ -27,7 +27,7 @@ class SudokuClient {
                 url: `${endPoint}/signin`,
                 data: {
                     username: "user1",
-                    password: "orderful",
+                    password: "12345678",
                 } as SignIn,
             });
 

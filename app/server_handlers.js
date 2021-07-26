@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.refresh = exports.setBoard = exports.place = exports.signIn = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const sudoku_1 = require("sudoku");
@@ -13,8 +12,8 @@ const environment = process.env.NODE_ENV;
 const redis = new ioredis_1.default(process.env.REDIS_STORAGE);
 const jwtKey = process.env.JWT_KEY;
 const users = {
-    user1: "orderful",
-    user2: "password2",
+    user1: "12345678",
+    user2: "12345678",
 };
 const getBoard = async (req, res) => {
     try {
@@ -41,7 +40,7 @@ const getBoard = async (req, res) => {
         return Promise.reject(err);
     }
 };
-const signIn = async (req, res) => {
+exports.signIn = async (req, res) => {
     try {
         const { username, password } = req.body;
         if (!username || !password || users[username] !== password) {
@@ -67,8 +66,7 @@ const signIn = async (req, res) => {
         throw err;
     }
 };
-exports.signIn = signIn;
-const place = async (req, res) => {
+exports.place = async (req, res) => {
     try {
         const [token, board] = await getBoard(req, res);
         const { i, j, value } = req.body;
@@ -112,8 +110,7 @@ const place = async (req, res) => {
         throw err;
     }
 };
-exports.place = place;
-const setBoard = async (req, res) => {
+exports.setBoard = async (req, res) => {
     try {
         const [token,] = await getBoard(req, res);
         const board = req.body;
@@ -127,8 +124,7 @@ const setBoard = async (req, res) => {
         throw err;
     }
 };
-exports.setBoard = setBoard;
-const refresh = async (req, res) => {
+exports.refresh = async (req, res) => {
     try {
         const [, board] = await getBoard(req, res);
         res.send(board);
@@ -137,4 +133,3 @@ const refresh = async (req, res) => {
         throw err;
     }
 };
-exports.refresh = refresh;

@@ -14,8 +14,8 @@ const redis = new Redis(process.env.REDIS_STORAGE);
 const jwtKey = process.env.JWT_KEY!;
 
 const users = {
-    user1: "orderful",
-    user2: "password2",
+    user1: "12345678",
+    user2: "12345678",
 };
 
 const getBoard = async (req: any, res: any): Promise<[Token, Board]> => {
