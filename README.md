@@ -22,10 +22,10 @@ After cloning, the test software can be run as follows:
 ## API
 
 ### POST /signin
-/signin requires a username and a password. Two users are known to the server, `user1` and `user2`, both having the password `12345678`.  Besides creating a game for a newly signed in user, /signin returns a Json Web Token (JWT) and thereafter the JWT, which is managed as a cookie, is used to locate the board that the user is currently playing.
+/signin requires a username and a password. Two users are known to the server, `user1` and `user2`, both having the same password. Besides creating a game for a newly signed in user, /signin returns a Json Web Token (JWT) and thereafter the JWT, which is managed as a cookie, is used to locate the board that the user is currently playing.
 
 ### GET /game/refresh
-There is an underlying assumption that client software is managing a parallel game board, which means that the server is not routinely returning the board to the client every time that the user places a number.  Nevertheless, /game/refresh allows the client software to retrieve the server's board should a resynch be  necessary.  
+There is an underlying assumption that client software is managing a parallel game board, which means that the server is not routinely returning the board to the client every time that the user places a number.  Nevertheless, /game/refresh allows the client software to retrieve the server's board should a resynch be necessary.  
 
 ### POST /game/place
 /game/place allows client software to place a number on the board.  However, illegal placements are not permitted and will be rejected as a bad request.  Checks that are applied are the following:
