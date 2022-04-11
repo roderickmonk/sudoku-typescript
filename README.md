@@ -65,14 +65,23 @@ The test code.
 *   White list the AWS ec2's source IP addresses for port 8000
     
 
-## Possible Performance Improvements (goal: 10m users)
-*   Assuming each board requires 400 bytes (pulled right out of the air), this would require 4Gb for 10m users, which is doable with a sufficiently large ec2.
+## Possible Performance Improvements
+*   Assuming each board requires 400 bytes, this would require 4Gb for 10m users, which is doable with a sufficiently large ec2.
 *   Manage the board as a Javascript typed array.
 *   Use a Javascript Map() instead of Redis.
-*   Box conflict testing improvements: memorize the boxes so that they do not need to be redetermined on each placement.  Possibly this could be done on an LRU basis, that is, retaining boxes in a Map() and only re-determing the boxes should the board need to be retrieved from Redis.
+*   Box conflict testing improvements: memorize the boxes so that they do not need to be redetermined on each placement.  Possibly this could be done on an LRU basis, that is, retaining boxes in a Map() and only re-determining the boxes should the board need to be retrieved from Redis.
 *   Use a load balancer that would farm off connections to child NodeJS servers.
 *   Move all board level management off to a C++ or Rust add-on (albeit retaining NodeJS as the executive).
 *   Rewrite the entire server in C++ or Rust.
+
+# To Test
+
+Last successfully tested on NodeJS version 14.17.6
+
+    npm install
+    npm run test
+
+
 
 
 
