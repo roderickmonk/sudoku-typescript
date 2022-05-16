@@ -58,7 +58,7 @@ Various utility functions.
 ### test_client.ts
 The test code.
 
-## Security Improvements
+## Possible Security Improvements
 *   Use https
 *   User 2FA
 *   Timeout the tokens
@@ -72,7 +72,7 @@ The test code.
 *   Box conflict testing improvements: memorize the boxes so that they do not need to be redetermined on each placement.  Possibly this could be done on an LRU basis, that is, retaining boxes in a Map() and only re-determining the boxes should the board need to be retrieved from Redis.
 *   Use a load balancer that would farm off connections to child NodeJS servers.
 *   Move all board level management off to a C++ or Rust add-on (albeit retaining NodeJS as the executive).
-*   Rewrite the entire server in C++ or Rust.
+*   Rewrite the entire server in C++, Rust, or Go.
 
 # To Test
 
