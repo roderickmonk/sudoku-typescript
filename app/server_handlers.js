@@ -3,17 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.refresh = exports.setBoard = exports.place = exports.signIn = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const sudoku_1 = require("sudoku");
 const util_1 = require("./util");
 const lodash_1 = __importDefault(require("lodash"));
 const environment = process.env.NODE_ENV;
-const redis = new ioredis_1.default(process.env.REDIS_STORAGE);
+const redis = new ioredis_1.default();
 const jwtKey = process.env.JWT_KEY;
 const users = {
-    user1: "12345678",
-    user2: "12345678",
+    user1: "%jL1Jt0Irq$Y",
+    user2: "%jL1Jt0Irq$Y",
 };
 const getBoard = async (req, res) => {
     try {
@@ -40,7 +41,7 @@ const getBoard = async (req, res) => {
         return Promise.reject(err);
     }
 };
-exports.signIn = async (req, res) => {
+const signIn = async (req, res) => {
     try {
         const { username, password } = req.body;
         if (!username || !password || users[username] !== password) {
@@ -49,14 +50,14 @@ exports.signIn = async (req, res) => {
         const token = jsonwebtoken_1.default.sign({ username }, jwtKey, {
             algorithm: "HS256",
         });
-        const board = sudoku_1.makepuzzle();
+        const board = (0, sudoku_1.makepuzzle)();
         await redis.set(token, JSON.stringify(board));
         if (environment === "development") {
             console.log("signin token:", token);
             const json = await redis.get(token);
             if (json) {
                 const board = JSON.parse(json);
-                util_1.displayBoard(board);
+                (0, util_1.displayBoard)(board);
             }
         }
         res.cookie("token", token);
@@ -66,12 +67,13 @@ exports.signIn = async (req, res) => {
         throw err;
     }
 };
-exports.place = async (req, res) => {
+exports.signIn = signIn;
+const place = async (req, res) => {
     try {
         const [token, board] = await getBoard(req, res);
         const { i, j, value } = req.body;
         if (environment === "development") {
-            util_1.displayBoard(board);
+            (0, util_1.displayBoard)(board);
             console.log({ i, j, value });
         }
         if (board[9 * i + j]) {
@@ -102,7 +104,7 @@ exports.place = async (req, res) => {
         board[9 * i + j] = value;
         await redis.set(token, JSON.stringify(board));
         if (environment === 'development') {
-            util_1.displayBoard(board);
+            (0, util_1.displayBoard)(board);
         }
         res.send("Placed");
     }
@@ -110,7 +112,8 @@ exports.place = async (req, res) => {
         throw err;
     }
 };
-exports.setBoard = async (req, res) => {
+exports.place = place;
+const setBoard = async (req, res) => {
     try {
         const [token,] = await getBoard(req, res);
         const board = req.body;
@@ -124,7 +127,8 @@ exports.setBoard = async (req, res) => {
         throw err;
     }
 };
-exports.refresh = async (req, res) => {
+exports.setBoard = setBoard;
+const refresh = async (req, res) => {
     try {
         const [, board] = await getBoard(req, res);
         res.send(board);
@@ -133,3 +137,4 @@ exports.refresh = async (req, res) => {
         throw err;
     }
 };
+exports.refresh = refresh;

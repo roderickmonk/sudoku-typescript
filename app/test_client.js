@@ -6,77 +6,78 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const util_1 = require("./util");
-const endPoint = "http://34.218.191.230:8000";
+const endPoint = "http://127.0.0.1:8000";
 const environment = process.env.NODE_ENV;
 class SudokuClient {
-    constructor() {
-        this.signIn = async () => {
-            try {
-                const resp = await axios_1.default({
-                    method: "post",
-                    url: `${endPoint}/signin`,
-                    data: {
-                        username: "user1",
-                        password: "12345678",
-                    },
-                });
-                this.token = util_1.getToken(resp);
-                this.board = resp.data;
-                if (environment === 'development') {
-                    util_1.displayBoard(this.board);
-                }
+    token;
+    board;
+    constructor() { }
+    signIn = async () => {
+        try {
+            const resp = await (0, axios_1.default)({
+                method: "post",
+                url: `${endPoint}/signin`,
+                data: {
+                    username: "user1",
+                    password: "%jL1Jt0Irq$Y",
+                },
+            });
+            this.token = (0, util_1.getToken)(resp);
+            this.board = resp.data;
+            if (environment === 'development') {
+                (0, util_1.displayBoard)(this.board);
             }
-            catch (err) {
-                throw err;
-            }
-        };
-        this.place = async (placement) => {
-            try {
-                await axios_1.default({
-                    method: "post",
-                    url: `${endPoint}/game/place`,
-                    data: placement,
-                    headers: {
-                        Cookie: `token=${this.token}`,
-                    },
-                });
-            }
-            catch (err) {
-                throw err;
-            }
-        };
-        this.setBoard = async (board) => {
-            try {
-                await axios_1.default({
-                    method: "post",
-                    url: `${endPoint}/game/set`,
-                    data: board,
-                    headers: {
-                        Cookie: `token=${this.token}`,
-                    },
-                });
-            }
-            catch (err) {
-                throw new Error(`${err.message} (${err.response.data})`);
-            }
-        };
-        this.refresh = async () => {
-            try {
-                const resp = await axios_1.default({
-                    method: "get",
-                    url: `${endPoint}/game/refresh`,
-                    headers: {
-                        Cookie: `token=${this.token}`,
-                    },
-                });
-                const board = resp.data;
-                util_1.displayBoard(board);
-            }
-            catch (err) {
-                throw err;
-            }
-        };
-    }
+        }
+        catch (err) {
+            throw err;
+        }
+    };
+    place = async (placement) => {
+        try {
+            await (0, axios_1.default)({
+                method: "post",
+                url: `${endPoint}/game/place`,
+                data: placement,
+                headers: {
+                    Cookie: `token=${this.token}`,
+                },
+            });
+        }
+        catch (err) {
+            throw err;
+        }
+    };
+    setBoard = async (board) => {
+        try {
+            await (0, axios_1.default)({
+                method: "post",
+                url: `${endPoint}/game/set`,
+                data: board,
+                headers: {
+                    Cookie: `token=${this.token}`,
+                },
+            });
+        }
+        catch (err) {
+            throw new Error(`${err.message} (${err.response.data})`);
+        }
+    };
+    refresh = async () => {
+        try {
+            const resp = await (0, axios_1.default)({
+                method: "get",
+                url: `${endPoint}/game/refresh`,
+                headers: {
+                    Cookie: `token=${this.token}`,
+                },
+            });
+            const board = resp.data;
+            (0, util_1.displayBoard)(board);
+        }
+        catch (err) {
+            throw err;
+        }
+    };
 }
 (async () => {
     try {

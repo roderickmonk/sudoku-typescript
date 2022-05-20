@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "NODE_ENV= test_client.js"
+    "test": "NODE_ENV= app/test_client.js"
   },
   "author": "Rod Monk <roderickmonk@gmail.com>",
   "license": "ISC",

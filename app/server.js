@@ -10,9 +10,9 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const server_handlers_1 = require("./server_handlers");
 (async () => {
     try {
-        const app = express_1.default();
+        const app = (0, express_1.default)();
         app.use(body_parser_1.default.json());
-        app.use(cookie_parser_1.default());
+        app.use((0, cookie_parser_1.default)());
         app.post("/signin", server_handlers_1.signIn);
         app.post("/game/place", server_handlers_1.place);
         app.get("/game/refresh", server_handlers_1.refresh);

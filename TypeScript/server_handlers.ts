@@ -9,7 +9,7 @@ import assert from "assert";
 
 const environment = process.env.NODE_ENV;
 
-const redis = new Redis(process.env.REDIS_STORAGE);
+const redis = new Redis();
 
 const jwtKey = process.env.JWT_KEY!;
 
