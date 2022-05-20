@@ -8,15 +8,17 @@ The purpose of this repo is to demonstrate typical NodeJS / TypeScript usage.  T
 The signing in process assigns a token to the session and this token is constant throughout the session and is returned to client software as a cookie.  Thereafter all subsequent API calls require the use of this token.  Also, at the point of the sign-in, a new game board is created and also returned to the user. This board is  recorded to a Redis database using the assigned token as key.
 
 ## Software Versions
-    TypeScript: 4.3.5
-    NodeJS:     14.17.3
+    TypeScript: 4.3.5+
+    NodeJS:     14.0+
+    Redis:      6.0+
 
 ## Running the test software
 After cloning, the test software can be run as follows:
 
-    $ cd rod-sudoku
+    $ cd sudoku-typescript
     $ source project    
     $ npm install
+    $ node app/server &
     $ npm run test    
 
 ## API
@@ -74,12 +76,6 @@ The test code.
 *   Move all board level management off to a C++ or Rust add-on (albeit retaining NodeJS as the executive).
 *   Rewrite the entire server in C++, Rust, or Go.
 
-# Testing
-
-Last successfully tested on NodeJS version 14.17.6
-
-    npm install
-    npm run test
 
 
 
