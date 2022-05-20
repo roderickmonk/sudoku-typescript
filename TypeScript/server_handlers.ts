@@ -11,7 +11,7 @@ const environment = process.env.NODE_ENV;
 
 const redis = new Redis();
 
-const jwtKey = process.env.JWT_KEY!;
+const jwtKey = "a-very-secret-key"
 
 const users = {
     user1: "%jL1Jt0Irq$Y",

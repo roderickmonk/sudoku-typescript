@@ -165,6 +165,7 @@ class SudokuClient {
         ];
         const value = 4;
         for (const [rows, cols] of boxes) {
+            console.log({ rows }, { cols });
             for (let i of rows) {
                 for (let j of cols) {
                     const board = Array(81).fill(null);

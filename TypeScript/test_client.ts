@@ -208,6 +208,8 @@ class SudokuClient {
 
         for (const [rows, cols] of boxes) {
 
+            console.log({ rows }, { cols })
+
             for (let i of rows) {
                 for (let j of cols) {
 
